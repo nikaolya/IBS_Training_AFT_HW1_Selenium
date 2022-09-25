@@ -55,6 +55,7 @@ public class InsuranceTests {
 		wait.until(ExpectedConditions.attributeContains(By.xpath(String.format("%s/..", HEALTH_XPATH)), "class", "active"));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'category-link') and @href = '/for-companies/zdorove']")));
 
+		closePopUpIfPresent();
 
 		// Переходим в раздел "Добровольное медицинское страхование"
 		final String VOLUNTARY_INSURANCE = "//a[contains(@href, 'dobrovolnoe-meditsinskoe-strakhovanie')]";
@@ -149,7 +150,6 @@ public class InsuranceTests {
 
 
 	private void fillInputFieldWithAttributeName(String name, String dataToInsert, String expectedData) {
-		closePopUpIfPresent();
 
 		final String INPUT_FIELD_XPATH = "//input[@name=\'%s\']";
 		WebElement element = driver.findElement(By.xpath(String.format(INPUT_FIELD_XPATH, name)));
@@ -178,7 +178,7 @@ public class InsuranceTests {
 			wait.until(ExpectedConditions.visibilityOf(closePopupButton));
 			closePopupButton.click();
 
-			System.out.println("CLOSED POPUP");
+			//System.out.println("CLOSED POPUP");
 		} catch (Exception e){
 
 		} finally {
