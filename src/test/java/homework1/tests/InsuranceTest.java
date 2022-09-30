@@ -13,7 +13,7 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class InsuranceTests {
+public class InsuranceTest {
 	private WebDriver driver;
 	private WebDriverWait wait;
 	private JavascriptExecutor js;
@@ -53,7 +53,8 @@ public class InsuranceTests {
 		final String HEALTH_XPATH = "//li/span[contains(@class, 'padding') and contains(text(), 'Здоровье')]";
 		driver.findElement(By.xpath(HEALTH_XPATH)).click();
 		wait.until(ExpectedConditions.attributeContains(By.xpath(String.format("%s/..", HEALTH_XPATH)), "class", "active"));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'category-link') and @href = '/for-companies/zdorove']")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'category-link') " +
+				"and @href = '/for-companies/zdorove']")));
 
 		closePopUpIfPresent();
 
@@ -99,7 +100,7 @@ public class InsuranceTests {
 		fillInputFieldWithAttributeName("userEmail", client.getEmail(), client.getEmail());
 
 		// Заполняем поле адрес
-		fillInputFieldEmail(client, client.getExpectedAddress());
+		fillInputFieldAddress(client, client.getExpectedAddress());
 
 		// Устанавливаем чекбокс "Я соглашаюсь с условиями"
 //		js.executeScript("window.scrollBy(0, 300);");
@@ -129,7 +130,7 @@ public class InsuranceTests {
 		}
 	}
 
-	private void fillInputFieldEmail(Client client, String expectedEmail) throws InterruptedException {
+	private void fillInputFieldAddress(Client client, String expectedAddress) throws InterruptedException {
 		WebElement inputFieldEmail = driver.findElement(By.xpath("//input[@type='text' and @placeholder = 'Введите']"));
 		scrollToElementJs(inputFieldEmail);
 		wait.until(ExpectedConditions.elementToBeClickable(inputFieldEmail));
@@ -143,9 +144,9 @@ public class InsuranceTests {
 		inputFieldEmail.sendKeys(Keys.ENTER);
 
 		String script = "return document.querySelectorAll('input.vue-dadata__input')[0].value;";
-		String suggestedEmail = js.executeScript(script).toString();
+		String suggestedAddress = js.executeScript(script).toString();
 
-		assertEquals(expectedEmail, suggestedEmail, "Введенное значение неверно");
+		assertEquals(expectedAddress, suggestedAddress, "Введенное значение неверно");
 	}
 
 
@@ -162,6 +163,7 @@ public class InsuranceTests {
 
 		String script = String.format("return document.getElementsByName('%s')[0].value;", name);
 		String actualDataInserted = js.executeScript(script).toString();
+		//String actualDataInserted = element.getAttribute("value");
 		assertEquals(expectedData, actualDataInserted, "Введенное значение неверно");
 	}
 
